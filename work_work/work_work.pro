@@ -27,12 +27,20 @@ SOURCES += \
         main.cpp \
         mainwindow.cpp \
     thread_sever.cpp \
-    mybutton.cpp
+    mybutton.cpp \
+    current_data_tree_widget.cpp \
+    current_data_tree_view.cpp \
+    alarmmodel.cpp \
+    alarmview.cpp
 
 HEADERS += \
         mainwindow.h \
     thread_sever.h \
-    mybutton.h
+    mybutton.h \
+    current_data_tree_widget.h \
+    current_data_tree_view.h \
+    alarmmodel.h \
+    alarmview.h
 
 FORMS += \
         mainwindow.ui

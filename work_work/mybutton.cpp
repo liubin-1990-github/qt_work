@@ -2,7 +2,7 @@
 
 MyButton::MyButton(QWidget *parent) : QPushButton(parent)
 {
-    this->resize(50,50);
+    this->resize(100,50);
 //    this->setStyleSheet("color:green");
     this->setStyleSheet("QPushButton{background-color:green}");
 }

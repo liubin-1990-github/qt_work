@@ -39,7 +39,7 @@ void thread_sever::run()
             FD_SET(cfd,&redset);
             maxfd =cfd>maxfd?cfd:maxfd;
             //add a button
-            addButtonToList(&client_addr);
+            addButtonToList(&client_addr,cfd);
         }
         //no new connect  use for conmmunicate
         for(int i=0;i<=maxfd;++i)
@@ -48,6 +48,23 @@ void thread_sever::run()
             {
                 char buf[1024]={0};
                 int len =recv(i,buf,sizeof(buf),0);
+                QString str=QString(QLatin1String(buf));
+                qDebug()<<str;
+                QString ip =str.section("##",0,0);
+                int CPUdata=str.section("##",1,1).toInt();
+                int GPUdata=str.section("##",2,2).toInt();
+                int diskData=str.section("##",3,3).toInt();
+                int memData=str.section("##",4,4).toInt();
+                QString time =str.section("##",5,5);
+                qDebug()<<"ip  "<<ip;
+                qDebug()<<"cpu  "<<CPUdata;
+                qDebug()<<"gpu "<<GPUdata;
+                qDebug()<<"disk "<<diskData;
+                qDebug()<<"mem  "<<memData;
+                qDebug()<<"time"<<time;
+
+                emit sendData(i,ip,CPUdata,GPUdata,diskData,memData,time);
+
                 if(len == -1)
                 {
                     perror("recv error");
@@ -56,10 +73,13 @@ void thread_sever::run()
                 else if(len ==0)
                 {
                     printf("client disconnected");
+                    //client disconnected emit signal file describe
+                    emit client_Disconnecte(i);
                     FD_CLR(i,&redset);
                     close(i);
                     break;
                 }
+
                 printf("read buf =%s\n",buf);
                 for(int i = 0;i<len;++i)
                 {
@@ -88,7 +108,7 @@ void thread_sever::run()
 
 }
 
-void thread_sever::addButtonToList(struct sockaddr_in* addr)
+void thread_sever::addButtonToList(struct sockaddr_in* addr,int fd)
 {
 
     //send the data of btn
@@ -100,5 +120,5 @@ void thread_sever::addButtonToList(struct sockaddr_in* addr)
 //    btn->setText(addr_str);
 //    m_button_list.push_front(btn);
 //    num++;
-    emit ButtonChanged(addr_str);
+    emit ButtonChanged(addr_str,fd);
 }

@@ -22,7 +22,9 @@ public:
     explicit thread_sever(QWidget *parent = nullptr);
 
 signals:
-    void ButtonChanged(QString str);
+    void ButtonChanged(QString str,int fd);
+    void client_Disconnecte(int fd);
+    void sendData(int fd,QString ip,int cpu,int gpu,int dis,int mem,QString time);
 
 public slots:
 protected:
@@ -32,7 +34,7 @@ public:
 //    QList<MyButton*>m_button_list;
 
 private:
-    void addButtonToList(struct sockaddr_in* addr);
+    void addButtonToList(struct sockaddr_in* addr,int fd);
 
 };
 
